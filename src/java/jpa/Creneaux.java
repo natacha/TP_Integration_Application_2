@@ -35,8 +35,6 @@ public class Creneaux {
         public Creneaux() {
         }
 
-        
-
         public Creneaux(int hdebut, int mdebut, int hfin, int mfin) {
             this.hdebut = hdebut;
             this.mdebut = mdebut;
@@ -46,9 +44,9 @@ public class Creneaux {
             this.modifyDate = null;
         }
 
-    public Date getCreateDate() {
-        return createDate;
-    }
+        public Date getCreateDate() {
+            return createDate;
+        }
 
     public int getHdebut() {
         return hdebut;

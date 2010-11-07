@@ -5,6 +5,7 @@
 
 package jpa;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -27,11 +28,22 @@ public class RvDataManager {
         em = emf.createEntityManager();
     }
 
-    public List<Rv> getRvbyAll(String jour) {
+    public List<Rv> getRvbyAll(Date jour) {
         List<Rv> listRv = null;
-        Query q =  em.createQuery("select rdv from Rv rdv  where rdv.createDate = \'"+jour+"\'");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        System.out.println(jour + " " + df.format(jour));
+        Query q =  em.createQuery("select rdv from Rv rdv  where rdv.jour = \'"+df.format(jour)+"\'");
+        listRv = q.getResultList();
         return listRv;
 
+    }
+
+    public List<Rv> getRvbyAll2(Date jour) {
+        List<Rv> listRv = null;
+        Query q =  em.createQuery("select rdv from Rv rdv  where rdv.jour = ?1");
+        q = q.setParameter(1, jour);
+        listRv = q.getResultList();
+        return listRv;
     }
 
     public void insertRv(Rv rv)
@@ -39,6 +51,7 @@ public class RvDataManager {
         EntityTransaction transac = em.getTransaction();
         transac.begin();
         em.persist(rv);
+        em.persist(rv.getCreneau());
         transac.commit();
     }
 
@@ -55,7 +68,9 @@ public class RvDataManager {
         EntityTransaction transac = em.getTransaction();
         transac.begin();
         Rv nRv = em.find(Rv.class, rId);
-        nRv.setJour(newJour);
+        if (nRv != null) {
+            nRv.setJour(newJour);
+        }
         transac.commit();
     }
 
@@ -64,7 +79,13 @@ public class RvDataManager {
         EntityTransaction transac = em.getTransaction();
         transac.begin();
         Rv nRv = em.find(Rv.class, rId);
-        em.remove(nRv);
+        if (nRv != null) {
+            em.remove(nRv);
+            Creneaux crenx = em.find(Creneaux.class, nRv.getCreneau().getId());
+            if (crenx != null) {
+                em.remove(crenx);
+            }
+        }
         transac.commit();
     }
 
@@ -72,6 +93,8 @@ public class RvDataManager {
     {
         StringBuilder sb = new StringBuilder();
         SimpleDateFormat df = new SimpleDateFormat("dd MM yyyy");
+
+        sb.append("<h2>Affichage des rendez-vous</h2>");
 
         for(int i = 0; i < listRv.size(); i++)
         {

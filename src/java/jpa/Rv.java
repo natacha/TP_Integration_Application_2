@@ -44,7 +44,16 @@ public class Rv {
         public Rv() {
         }
 
+        public Rv(Date jour, Clients client, Creneaux creneau, Medecins medecin) {
+            this.jour = jour;
+            this.client = client;
+            this.creneau = creneau;
+            this.medecin = medecin;
+            this.createDate = new Date(System.currentTimeMillis());
+            this.modifyDate = null;
+        }
 
+        
         public int getId ()
         {
                 return id;
@@ -103,13 +112,5 @@ public class Rv {
     public void setModifyDate(Date modifyDate) {
         this.modifyDate = modifyDate;
     }
-
-    public Rv(Date jour, Clients client, Creneaux creneau, Medecins medecin) {
-        this.jour = jour;
-        this.client = client;
-        this.creneau = creneau;
-        this.medecin = medecin;
-    }
-
 
 }

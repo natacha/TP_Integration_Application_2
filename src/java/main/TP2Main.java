@@ -15,8 +15,11 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 import jpa.Clients;
 import jpa.ClientsDataManager;
+import jpa.Creneaux;
 import jpa.Medecins;
 import jpa.MedecinsDataManager;
+import jpa.Rv;
+import jpa.RvDataManager;
 
 /**
  *
@@ -45,17 +48,17 @@ public class TP2Main {
            cdm.insertClients(c);
 
            cdm.updateClients(4, "PASSERAT");
-           System.out.println(jour);
-SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+          /* System.out.println(jour);*/
+/*SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
-           q = em.createQuery("select rdv from Rv rdv  where rdv.jour = '"+df.format(jour)/*jour*/+"'");
-           sb.append(q.getResultList());
+           q = em.createQuery("select rdv from Rv rdv  where rdv.jour = '"+df.format(jour)+"'");*/
+           //sb.append(q.getResultList());
 
            cdm.deleteClients(25);
 
            MedecinsDataManager mdm = new MedecinsDataManager();
            List<Medecins> listMed = mdm.getMedecins();
-           mdm.displayMedecins(listMed);
+           sb.append(mdm.displayMedecins(listMed));
 
            Medecins m = new Medecins("Mr", "Dumou", "absent");
            mdm.insertMedecins(m);
@@ -63,7 +66,24 @@ SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
            mdm.updateMedecins(5, "Mme");
 
            mdm.deleteMedecins(6);
+
+           RvDataManager rdm = new RvDataManager();
+           List<Rv> listRdv = rdm.getRvbyAll(jour);
+           sb.append(rdm.display(listRdv));
+
+           rdm.deleteRv(7);
+
+           Creneaux crenx = new Creneaux(10,12,10,32);
+           Rv rdv = new Rv(jour, c, crenx, m);
+           rdm.insertRv(rdv);
+           rdm.deleteRv(rdv.getId());
+           listRdv = rdm.getRV();
+           sb.append(rdm.display(listRdv));
+
+           listRdv = rdm.getRvbyAll2(jour);
+           sb.append(rdm.display(listRdv));
+
 		
-		   return new String(sb);
+          return new String(sb);
     }
 }

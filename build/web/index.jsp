@@ -20,9 +20,7 @@
         <h1>Hello World!</h1>
 
         <%
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String c = new TP2Main().go(sdf.parse("1900-01-01"));
-
+        String c = new TP2Main().go(new SimpleDateFormat("dd-MM-yyyy").parse("01-01-1900"));
         %>
 
         <%=c%>
